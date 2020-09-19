@@ -2,7 +2,8 @@
   <div>
     <h2 class="text-center text-2xl">Movies</h2>
     <div class="md:flex flex-wrap">
-      <div
+      <router-link
+        :to="'movie/' + movie.id"
         v-for="movie in allMovies"
         :key="movie.id"
         class="md:w-1/2 p-6"
@@ -31,26 +32,22 @@
             </div>
           </div>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import defaultImg from "./../assets/default-img.jpg";
 export default {
   name: "AllMovies",
   computed: mapGetters(["allMovies"]),
   methods: {
-    ...mapActions(["fetchMovies"]),
     aVueFunctionThatChangesTheSrc(movie) {
       movie.posterurl = defaultImg;
-      console.clear();
+      // console.clear();
     },
-  },
-  created() {
-    this.fetchMovies();
   },
 };
 </script>

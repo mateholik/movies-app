@@ -1,13 +1,12 @@
 <template>
   <div class="md:flex py-8">
     <div>
-      <p>Movies number per page:</p>
       <div class="inline-block relative w-64">
         <select
           @change="limitMovies($event)"
           class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
         >
-          <option value="disabled selected">Select</option>
+          <option value="" disabled selected>Number per page</option>
           <option value="200">200</option>
           <option value="100">100</option>
           <option value="50">50</option>
@@ -31,13 +30,12 @@
       </div>
     </div>
     <div>
-      <p>Filter by genre:</p>
       <div class="inline-block relative w-64">
         <select
           @change="byGenreMovies($event)"
           class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
         >
-          <option disabled selected value="">Select</option>
+          <option disabled selected value="">Filter by genre</option>
           <option value="Action">Action</option>
           <option value="Biography">Biography</option>
           <option value="Comedy">Comedy</option>
@@ -68,13 +66,12 @@
       </div>
     </div>
     <div>
-      <p>Movies number per IMDB rating:</p>
       <div class="inline-block relative w-64">
         <select
           @change="byRatingMovies($event)"
           class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
         >
-          <option disabled selected>Choose</option>
+          <option disabled selected>IMDB rating</option>
           <option value="8">8</option>
           <option value="7">7</option>
           <option value="all">All</option>
@@ -105,10 +102,4 @@ export default {
 };
 </script>
 
-<style>
-select {
-  margin-top: 20px;
-  padding: 6px;
-  border: #41b883 1px solid;
-}
-</style>
+<style></style>
