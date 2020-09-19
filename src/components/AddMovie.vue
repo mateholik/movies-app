@@ -3,7 +3,8 @@
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
     >
-      Add Movie
+      <span v-if="update">Edit Movie</span>
+      <span v-else>Add Movie</span>
     </button>
 
     <form class="w-full max-w-lg" @submit.prevent="submit">
@@ -129,6 +130,27 @@
             </p>
           </div>
         </div>
+        <div v-if="update" class="w-full px-3">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="grid-year"
+          >
+            Actors
+          </label>
+          <input
+            v-model.trim="$v.actors.$model"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            :class="{ 'border-red-500': $v.actors.$error }"
+            id="grid-actors"
+            type="text"
+            placeholder="Separate by coma"
+          />
+          <div v-if="$v.actors.$dirty">
+            <p class="text-red-500 text-xs italic" v-if="!$v.actors.required">
+              Field is required
+            </p>
+          </div>
+        </div>
       </div>
       <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full px-3">
@@ -191,9 +213,11 @@
 </template>
 
 <script>
+import defaultImg from "./../assets/default-img.jpg";
 import { mapActions } from "vuex";
 import {
   required,
+  requiredIf,
   minLength,
   between,
   maxLength,
@@ -201,6 +225,12 @@ import {
 } from "vuelidate/lib/validators";
 export default {
   name: "AddMovie",
+  props: {
+    update: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       title: "",
@@ -208,27 +238,45 @@ export default {
       genre: "",
       rating: "",
       image: "",
+      actors: "",
       description: "",
       submitStatus: null,
     };
   },
   methods: {
-    ...mapActions(["addMovie"]),
+    ...mapActions(["addMovie", "updateMovie"]),
     submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR";
       } else {
-        const newMovie = {
+        let newMovie = {
           title: this.title,
           year: this.year,
           imdbRating: this.rating,
           genres: this.genre.split(","),
           storyline: this.description,
-          posterurl: this.image,
+          posterurl: this.image || defaultImg,
         };
-        this.addMovie(newMovie);
+
+        if (!this.update) {
+          this.addMovie(newMovie);
+        } else {
+          newMovie.actors = this.actors.split(",");
+          this.updateMovie(newMovie);
+        }
+
         this.submitStatus = "OK";
+        this.$v.$reset();
+        this.title = "";
+        this.year = "";
+        this.rating = "";
+        this.genre = "";
+        this.description = "";
+        this.image = "";
+        if (this.update) {
+          this.actors = "";
+        }
       }
     },
   },
@@ -244,14 +292,19 @@ export default {
     genre: {
       required,
     },
+    actors: {
+      required: requiredIf(function() {
+        return this.update;
+      }),
+    },
     rating: {
       required,
       between: between(1, 10),
     },
     description: {
       required,
-      minLength: minLength(50),
-      maxLength: maxLength(300),
+      minLength: minLength(20),
+      maxLength: maxLength(200),
     },
     image: {
       url,

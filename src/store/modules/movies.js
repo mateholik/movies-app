@@ -65,13 +65,20 @@ const actions = {
     });
     commit("setMovie", movie[0]);
   },
-  // eslint-disable-next-line no-unused-vars
   async addMovie({ commit, state }, movieObj) {
     movieObj.show = true;
     movieObj.id = state.movies.length + 1;
-    console.log(movieObj);
-    const updatedList = await state.movies.unshift(movieObj);
-    commit("setMovie", updatedList);
+    await state.movies.unshift(movieObj);
+    commit("setMovie", movieObj);
+  },
+  // eslint-disable-next-line no-unused-vars
+  async updateMovie({ commit, state }, movieObj) {
+    movieObj.id = state.movie.id;
+    const updatedList = await state.movies.map((el) => {
+      return el.id === state.movie.id ? movieObj : el;
+    });
+    commit("setMovie", movieObj);
+    commit("setMovies", updatedList);
   },
 };
 
