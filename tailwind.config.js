@@ -5,8 +5,18 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {},
+    fontFamily: {
+      body: ["Alegreya", "serif"],
+    },
+    extend: {
+      opacity: {
+        "85": ".85",
+      },
+    },
   },
   variants: {},
   plugins: [],
-}
+  corePlugins: {
+    outline: false,
+  },
+};

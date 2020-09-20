@@ -50,10 +50,14 @@ const actions = {
   async byRatingMovies({ commit, state }, e) {
     const rating = e.target.options[e.target.options.selectedIndex].value * 1;
     const newList = state.movies.map((el) => {
-      if (el.imdbRating >= rating && el.imdbRating < rating + 1) {
+      if (rating === 999) {
         el.show = true;
       } else {
-        el.show = false;
+        if (el.imdbRating >= rating && el.imdbRating < rating + 1) {
+          el.show = true;
+        } else {
+          el.show = false;
+        }
       }
       return el;
     });
