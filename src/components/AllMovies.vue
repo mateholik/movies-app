@@ -80,7 +80,7 @@ export default {
     ...mapActions(["addfavorite"]),
     aVueFunctionThatChangesTheSrc(movie) {
       movie.posterurl = defaultImg;
-      // console.clear();
+      console.clear();
     },
   },
 };

@@ -72,4 +72,7 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+a {
+  text-decoration: none;
+}
 </style>
