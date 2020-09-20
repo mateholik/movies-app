@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="md:flex flex-wrap">
-      <router-link
-        :to="'movie/' + movie.id"
+      <div
         v-for="movie in allMovies"
         :key="movie.id"
         class="md:w-1/2 p-6"
@@ -10,6 +9,7 @@
       >
         <div
           class="bg-black bg-opacity-85 rounded p-4 h-full text-white border-2 border-orange-700"
+          :class="{ 'bg-red-900': movie.fav }"
         >
           <div class="flex">
             <div>
@@ -37,18 +37,32 @@
               </p>
               <p class="mt-2">
                 <strong class="text-gray-400">Story: </strong
-                >{{ movie.storyline | truncate(100, "...") }}
+                >{{ movie.storyline | truncate(80, "...") }}
               </p>
             </div>
           </div>
+          <div class="flex justify-end mt-4">
+            <router-link
+              :to="'movie/' + movie.id"
+              class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-6"
+              >Read more</router-link
+            >
+            <div
+              class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+              @click="addfavorite(movie.id)"
+            >
+              <span v-if="movie.fav">Remove favorite</span>
+              <span v-else>Add to favorite</span>
+            </div>
+          </div>
         </div>
-      </router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import defaultImg from "./../assets/default-img.jpg";
 export default {
   name: "AllMovies",
@@ -63,6 +77,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["addfavorite"]),
     aVueFunctionThatChangesTheSrc(movie) {
       movie.posterurl = defaultImg;
       // console.clear();

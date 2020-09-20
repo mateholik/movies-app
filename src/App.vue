@@ -1,11 +1,15 @@
 <template>
   <div id="app" class="font-body">
-    <div id="nav" class="text-center mb-8">
+    <div id="nav" class="flex justify-center items-center py-8">
       <router-link
-        class="inline-block mt-4 text-white px-8 py-2 text-3xl bg-orange-500 rounded hover:bg-orange-700"
+        class="inline-block text-white px-8 py-2 text-3xl bg-orange-500 rounded hover:bg-orange-700"
         to="/"
         >Home</router-link
       >
+      <div class="favourite relative ml-4">
+        <img :src="require('./assets/favourite.svg')" class="w-20 h-20" />
+        <span class="absolute text-3xl text-white">{{ favMovies.length }}</span>
+      </div>
     </div>
     <div class="container">
       <transition name="router-animation">
@@ -16,12 +20,13 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 // import bgImg from "./assets/mgm.jpg";
 export default {
   methods: {
     ...mapActions(["fetchMovies"]),
   },
+  computed: mapGetters(["favMovies"]),
   created() {
     this.fetchMovies();
   },
@@ -61,5 +66,10 @@ html {
 .router-animation-leave {
   opacity: 1;
   transform: translateY(0px);
+}
+.favourite span {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

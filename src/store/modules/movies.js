@@ -8,6 +8,9 @@ const state = {
 const getters = {
   allMovies: (state) => state.movies,
   movie: (state) => state.movie,
+  favMovies: (state) => {
+    return state.movies.filter((movie) => movie.fav);
+  },
 };
 
 const actions = {
@@ -17,6 +20,7 @@ const actions = {
     );
     response.data.forEach((item, index) => {
       item.show = true;
+      item.fav = false;
       item.id = index + 1;
     });
     commit("setMovies", response.data);
@@ -83,6 +87,16 @@ const actions = {
     });
     commit("setMovie", movieObj);
     commit("setMovies", updatedList);
+  },
+  // eslint-disable-next-line no-unused-vars
+  async addfavorite({ commit, state }, id) {
+    const newList = await state.movies.map((el) => {
+      if (el.id === id) {
+        el.fav = !el.fav;
+      }
+      return el;
+    });
+    commit("setMovies", newList);
   },
 };
 
